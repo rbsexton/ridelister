@@ -1,22 +1,19 @@
-import webapp2
-import cgi
+import os
+import urllib
 
-MAIN_PAGE_HTML = """\
-<html>
-  <body>
-      <form action="/submit" method="post">
-	<div>Ridename:<textarea name="title" rows="1" cols="60"></textarea></div>
-	<div>Starting Location: <textarea name="starting" rows="1" cols="60"></textarea></div>
-	<div>Description: <textarea name="description" rows="3" cols="60"></textarea></div>
-	<div><input type="submit" value="Submit"></div>
-      </form>
-</body>
-</html>
-"""
+import cgi 
+import jinja2
+import webapp2
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+        extensions=['jinja2.ext.autoescape'],
+	    autoescape=True)
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-    	self.response.write(MAIN_PAGE_HTML)
+	template = JINJA_ENVIRONMENT.get_template('index.html')
+	self.response.write(template.render())
 
 class SubmissionReport(webapp2.RequestHandler):
     def post(self):
