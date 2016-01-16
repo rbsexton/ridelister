@@ -1,4 +1,7 @@
 Problems to be worked out.
 
 1.  Gracefully handle people who don't use google logins.
-
+2.  Add creation and modification entries to the database things.
+3.  Add a version number to the database thing so that we can handle upgrades.
+4.  Make the view thingie handle bad queries.
+5.  Write a thing that can be used to purge old stuff from the database.
