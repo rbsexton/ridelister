@@ -23,6 +23,7 @@ class RideEntry(webapp2.RequestHandler):
             greeting = 'Hello, ' + user.nickname()
         else:
             greeting = 'You are not logged into google.  Some features will be unavailable'
+            self.redirect(users.create_login_url(self.request.uri))
         
         template_values = {
             'greeting': greeting,
