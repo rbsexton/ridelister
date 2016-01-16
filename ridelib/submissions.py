@@ -20,7 +20,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True
 )
 
-from bob.ridedata import *
+from ridelib.ridedata import *
 
 class SubmissionReport(webapp2.RequestHandler):
     def post(self):

@@ -9,8 +9,8 @@ import cgi
 import jinja2
 import webapp2
 
-from bob.submissions import *
-from bob.rideentry import *
+from ridelib.submissions import *
+from ridelib.rideentry import *
 
 app = webapp2.WSGIApplication([
 	('/', RideEntry),
