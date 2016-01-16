@@ -1,4 +1,4 @@
-'''Put up the initial form for entering the ride.'''
+'''Put up the initial form for entering the ride.  Pretty basic.'''
 __all__ = (
 	"RideEntry",
 )

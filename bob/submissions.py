@@ -16,18 +16,28 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True
 )
 
+from bob.ridedata import *
+
 class SubmissionReport(webapp2.RequestHandler):
     def post(self):
         ridename = cgi.escape(self.request.get('name'))
         ridestart = cgi.escape(self.request.get('startinglocation'))
         ridedescription = cgi.escape(self.request.get('description'))
+
+        # Load it up into a NDB entry.
+        listing = RideDataItem(
+            name = ridename,
+            startlocation = ridestart,
+            description = ridedescription,
+            )
     
         template_values = {
-			'ridename': ridename,
-			'ridestart': ridestart,
-			'ridedescription': ridedescription
+            'ridename': ridename,
+            'ridestart': ridestart,
+            'ridedescription': ridedescription
         }
     
         template = JINJA_ENVIRONMENT.get_template('submissionack.html')
         self.response.write(template.render(template_values))
+
 
