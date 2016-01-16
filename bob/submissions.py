@@ -1,4 +1,8 @@
-'''Code to handle submission of the http post'''
+'''
+Code to handle submission of the http posts.
+SubmissionReport handles the initial user submission.
+
+'''
 __all__ = (
     "SubmissionReport",
 )
@@ -30,14 +34,24 @@ class SubmissionReport(webapp2.RequestHandler):
             startlocation = ridestart,
             description = ridedescription,
             )
+
+        # Now its time to stash this data into the database and retrieve the key
+        # So that it can be handed off.
+        
+        key = listing.put()
+        ridedbkey = key.urlsafe()
     
         template_values = {
             'ridename': ridename,
             'ridestart': ridestart,
-            'ridedescription': ridedescription
+            'ridedescription': ridedescription,
+            'ridedbkey': ridedbkey,
         }
-    
+
         template = JINJA_ENVIRONMENT.get_template('submissionack.html')
         self.response.write(template.render(template_values))
+
+
+
 
 
