@@ -33,6 +33,7 @@ class SubmissionReport(webapp2.RequestHandler):
 
         # Load it up into a NDB entry.
         listing = RideDataItem(
+			version = 1,
             name = ridename,
             startlocation = ridestart,
             description = ridedescription,
@@ -62,14 +63,16 @@ class SubmissionDisplay(webapp2.RequestHandler):
         textkey = self.request.get('dbkey')
 
         # There should be some error checking here.
-   
+     
         entrykey = ndb.Key(urlsafe=textkey)        
         ridelisting = entrykey.get()
        
         template_values = {
             'ridename': ridelisting.name,
-			'ridestart': ridelisting.startlocation,
-			'ridedescription': ridelisting.description,
+            'ridestart': ridelisting.startlocation,
+            'ridedescription': ridelisting.description,
+            'creation': ridelisting.created,
+            'modified': ridelisting.modified,
             'ridedbkey': textkey,
         }
  
