@@ -1,0 +1,4 @@
+Problems to be worked out.
+
+1.  Gracefully handle people who don't use google logins.
+
