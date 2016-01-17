@@ -3,3 +3,5 @@ Problems to be worked out.
 1.  Gracefully handle people who don't use google logins.
 4.  Make the view thingie handle bad queries.
 5.  Write a thing that can be used to purge old stuff from the database.
+6.  Add a checkbox to the main form so that you can opt-out of the 
+    confirmation email.
