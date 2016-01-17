@@ -76,9 +76,13 @@ class SubmissionReport(webapp2.RequestHandler):
 
 Thanks for submitting your ride!
 
-Ride Name: %s
+<p>Ride Name: %s
+<p>Ride Starting Location: %s
+<p>Ride Description: %s
 
-        """ % ridename
+<p>You may edit this ride listing: <a href="edit?dbkey=%s">Edit</a>
+
+        """ % (ridename, ridestart, ridedescription, ridedbkey)
 
         if user:
             message.to = user.email()
