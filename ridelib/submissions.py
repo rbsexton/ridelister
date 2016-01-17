@@ -15,7 +15,9 @@ import cgi
 import webapp2
 import jinja2
 
+from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.api import mail
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -33,19 +35,28 @@ class SubmissionReport(webapp2.RequestHandler):
 
         # Load it up into a NDB entry.
         listing = RideDataItem(
-			version = 1,
+            version = 1,
             name = ridename,
             startlocation = ridestart,
             description = ridedescription,
             )
 
         # Now its time to stash this data into the database and retrieve the key
-        # So that it can be handed off.
-        
+        # So that it can be shared with the user in URL form.        
         key = listing.put()
         ridedbkey = key.urlsafe()
-    
+   
+        # Get their email address from their google info.
+        user = users.get_current_user()
+
+        if user:
+            greeting = 'Ride Submission by ' + user.nickname()
+        else:
+            greeting = 'You must be logged in to get a confirmation email'
+            self.redirect(users.create_login_url(self.request.uri))
+
         template_values = {
+            'greeting': greeting,
             'ridename': ridename,
             'ridestart': ridestart,
             'ridedescription': ridedescription,
@@ -55,6 +66,15 @@ class SubmissionReport(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('submissionack.html')
         self.response.write(template.render(template_values))
 
+        # Now that we've sent the form response, send the confirmation email.
+        # There should have been a checkbox in case they didn't want it.
+
+        message = mail.EmailMessage(sender="Ride Lister <robert@kudra.com>",
+                                    subject="Your ride listing")
+
+        message.to = user.email()
+        message.body = """Thanks for submitting your ride."""
+        message.send()
 
 
 # Here is a class that can be used to display a database entry.
