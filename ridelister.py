@@ -14,6 +14,7 @@ from ridelib.rideentry import *
 
 app = webapp2.WSGIApplication([
 	('/', RideEntry),
+	('/edit', RideEntryEdit),
 	('/submit', SubmissionReport),
 	('/view', SubmissionDisplay),
 ], debug=True)
