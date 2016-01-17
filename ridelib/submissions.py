@@ -72,9 +72,17 @@ class SubmissionReport(webapp2.RequestHandler):
         message = mail.EmailMessage(sender="Ride Lister <robert@kudra.com>",
                                     subject="Your ride listing")
 
-        message.to = user.email()
-        message.body = """Thanks for submitting your ride."""
-        message.send()
+        message.body = """
+
+Thanks for submitting your ride!
+
+Ride Name: %s
+
+        """ % ridename
+
+        if user:
+            message.to = user.email()
+            message.send()
 
 
 # Here is a class that can be used to display a database entry.
