@@ -35,7 +35,7 @@ class SubmissionReport(webapp2.RequestHandler):
 
         # Load it up into a NDB entry.
         listing = RideDataItem(
-            version = 1,
+            version = 2,
             name = ridename,
             startlocation = ridestart,
             description = ridedescription,

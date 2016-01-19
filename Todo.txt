@@ -5,3 +5,5 @@ Problems to be worked out.
 5.  Write a thing that can be used to purge old stuff from the database.
 6.  Add a checkbox to the main form so that you can opt-out of the 
     confirmation email.
+7.  Per the google docs, it doesn't look like there are good ways to have a 
+  calendar thats run by an app.   We can use the credentials of the calendar owner.

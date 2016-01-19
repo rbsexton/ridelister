@@ -6,13 +6,21 @@ __all__ = (
 from google.appengine.ext import ndb
 
 class RideDataItem(ndb.Model):
+	def __init__(self):
+		version = 2
+	
 	version = ndb.IntegerProperty()
 
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	modified = ndb.DateTimeProperty(auto_now=True)
 	
 	name  = ndb.StringProperty()
+	description = ndb.StringProperty()
+
 	leader  = ndb.StringProperty()
+
 	startlocation = ndb.StringProperty()
- 	description = ndb.StringProperty()
+	startcoords = ndb.GeoPtProperty()
+
+	approved = ndb.BooleanProperty()
 
