@@ -1,26 +1,24 @@
 '''The Google system uses python objects as database things'''
 __all__ = (
-	"RideDataItem",
+    "RideDataItem",
 )
 
 from google.appengine.ext import ndb
 
 class RideDataItem(ndb.Model):
-	def __init__(self):
-		version = 2
-	
-	version = ndb.IntegerProperty()
 
-	created = ndb.DateTimeProperty(auto_now_add=True)
-	modified = ndb.DateTimeProperty(auto_now=True)
-	
-	name  = ndb.StringProperty()
-	description = ndb.StringProperty()
+    version = ndb.IntegerProperty()
 
-	leader  = ndb.StringProperty()
+    created = ndb.DateTimeProperty(auto_now_add=True)
+    modified = ndb.DateTimeProperty(auto_now=True)
+    
+    name  = ndb.StringProperty()
+    description = ndb.StringProperty()
 
-	startlocation = ndb.StringProperty()
-	startcoords = ndb.GeoPtProperty()
+    leader  = ndb.StringProperty()
 
-	approved = ndb.BooleanProperty()
+    startlocation = ndb.StringProperty()
+    startcoords = ndb.GeoPtProperty()
+
+    approved = ndb.BooleanProperty()
 

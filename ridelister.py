@@ -9,14 +9,15 @@ import cgi
 import jinja2
 import webapp2
 
-from ridelib.submissions import *
 from ridelib.rideentry import *
+from ridelib.submit import *
+from ridelib.approver import *
 
 app = webapp2.WSGIApplication([
-	('/', RideEntry),
-	('/edit', RideEntryEdit),
-	('/submit', SubmissionReport),
-	('/view', SubmissionDisplay),
+    ('/', RideEntry),
+    ('/edit', RideEntryEdit),
+    ('/submit', SubmissionAck),
+    ('/view', SubmissionDisplay),
 ], debug=True)
 
 
