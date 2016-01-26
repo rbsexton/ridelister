@@ -29,9 +29,11 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 from ridelib.ridedata import *
 
+# This is the first place that we land when they press 'submit'
 class SubmissionAck(webapp2.RequestHandler):
     def post(self):
         ridename = cgi.escape(self.request.get('name'))
+        ridedate = cgi.escape(self.request.get('date'))
         ridestart = cgi.escape(self.request.get('startinglocation'))
         ridedescription = cgi.escape(self.request.get('description'))
 
@@ -60,6 +62,7 @@ class SubmissionAck(webapp2.RequestHandler):
         template_values = {
             'greeting': greeting,
             'ridename': ridename,
+            'ridedate': ridedate,
             'ridestart': ridestart,
             'ridedescription': ridedescription,
             'ridedbkey': ridedbkey,

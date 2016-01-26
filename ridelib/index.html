@@ -1,10 +1,25 @@
 {% autoescape true %}
 <html>
+<head>
+  <meta charset="utf-8">
+  <title>Ride Entry Worksheet</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
+
+</head>
   <body>
 	{{ greeting }}
 	<hr>
     <form action="/submit" method="post">
 	<div>Ridename:<textarea name="name" rows="1" cols="60"></textarea></div>
+	<div>Date: <input name="date" type="text" id="datepicker"></div>
 	<div>Starting Location: <textarea name="startinglocation" rows="1" cols="60"></textarea></div>
 	<div>Description: <textarea name="description" rows="3" cols="60"></textarea></div>
 	<div><input type="submit" value="Submit"></div>
