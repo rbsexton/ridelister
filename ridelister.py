@@ -18,6 +18,7 @@ app = webapp2.WSGIApplication([
     ('/edit', RideEntryEdit),
     ('/submit', SubmissionAck),
     ('/view', SubmissionDisplay),
+    ('/approve', SubmissionApprove),
 ], debug=True)
 
 
