@@ -17,6 +17,9 @@ import cgi
 import webapp2
 import jinja2
 
+import string
+import datetime
+
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.api import mail
@@ -32,15 +35,25 @@ from ridelib.ridedata import *
 # This is the first place that we land when they press 'submit'
 class SubmissionAck(webapp2.RequestHandler):
     def post(self):
+
+        # Should there be some input validation here?
         ridename = cgi.escape(self.request.get('name'))
         ridedate = cgi.escape(self.request.get('date'))
         ridestart = cgi.escape(self.request.get('startinglocation'))
         ridedescription = cgi.escape(self.request.get('description'))
 
+        # Convert the date into a native object so that it can 
+        # Get stuffed into the database entry
+        
+        dt = datetime.datetime.strptime(ridedate, "%m/%d/%Y")
+
+        # print repr(dt)
+
         # Load it up into a NDB entry.
         listing = RideDataItem(
             version = 2,
             name = ridename,
+            startdate = dt.date(),
             startlocation = ridestart,
             description = ridedescription,
             )
@@ -106,7 +119,8 @@ class SubmissionDisplay(webapp2.RequestHandler):
        
         template_values = {
             'ridename': ridelisting.name,
-            'ridestart': ridelisting.startlocation,
+            'ridestartlocation': ridelisting.startlocation,
+            'ridestartdate': ridelisting.startdate,
             'ridedescription': ridelisting.description,
             'creation': ridelisting.created,
             'modified': ridelisting.modified,

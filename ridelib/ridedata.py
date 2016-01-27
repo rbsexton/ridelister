@@ -12,7 +12,8 @@ class RideDataItem(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     modified = ndb.DateTimeProperty(auto_now=True)
     
-    name  = ndb.StringProperty()
+    name        = ndb.StringProperty()
+    startdate   = ndb.DateProperty()
     description = ndb.StringProperty()
 
     leader  = ndb.StringProperty()
