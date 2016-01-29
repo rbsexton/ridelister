@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 '''
 Methods Related to processing approvals.
 All of these will require validation
@@ -8,6 +10,7 @@ __all__ = (
     "AdminRideCancel",
 )
 
+import httplib2
 import os
 import jinja2
 import webapp2
@@ -16,17 +19,76 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.api import mail
 
+from apiclient import discovery
+
+import oauth2client
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.appengine import StorageByKeyName
+from oauth2client.appengine import CredentialsNDBModel
+
+import datetime
+
+
+
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+CLIENT_SECRET_FILE = 'credentials/client_secret.json'
+APPLICATION_NAME = 'Ridelister'
+
+
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True
 )
 
+# http://stackoverflow.com/questions/15493062/store-access-token-from-google-oauth-2-0-to-access-drive-data-from-application-a
+
+def get_credentials(user_id):
+    """Gets valid user credentials from storage.
+
+    If nothing has been stored, or if the stored credentials are invalid,
+    the OAuth2 flow is completed to obtain the new credentials.
+
+    Returns:
+        Credentials, the obtained credential.
+    """
+    storage = StorageByKeyName(CredentialsNDBModel, user_id, 'credentials')
+    credentials = storage.get()
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets(
+               CLIENT_SECRET_FILE,
+               SCOPES,
+               redirect_uri="https://localhost:8080/oauth2callback",
+               )
+
+        # Todo - Look this one up...
+        flow.user_agent = APPLICATION_NAME
+        # credentials = tools.run_flow(flow, storage)
+        # print('Storing credentials')
+        auth_uri = flow.step1_get_authorize_url()
+        
+
+    return credentials
+
+
 class SubmissionApprove(webapp2.RequestHandler):
     def get(self):
-    
-        # Get Credentials
+
+        # We'll use the nickname as a credentials key.
         user = users.get_current_user()
+    
+        if user:
+            greeting = 'Ride Submission by ' + user.nickname()
+        else:
+            greeting = 'You must be logged in to get a confirmation email'
+            self.redirect(users.create_login_url(self.request.uri))
+
+        # Get Credentials
+        credentials = get_credentials(user.nickname())
+        # http = credentials.authorize(httplib2.Http())
+        # service = discovery.build('calendar', 'v3', http=http)
+    
 
         if user:
             nick = user.nickname()

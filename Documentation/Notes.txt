@@ -1,0 +1,30 @@
+Google app engine notes
+-----------------------------------------------
+
+There is a class of accounts called 'Service Accounts' that are made for 
+application running on servers that need to access the google infrastructure
+
+https://developers.google.com/api-client-library/python/auth/service-accounts
+
+It looks like that isn't the way to go.   The user will need to authenticate in any case,
+
+You need web credentials.
+
+This is complicate.   Ugh.  You need to bounce the user over 
+https://developers.google.com/api-client-library/python/auth/web-app#protectauthcode
+
+Except it gets better - The google frameworks do all the messy things.
+
+Workaround for using easy_install on mac - 
+
+export PYTHONPATH=~/projects/ridelister/lib/
+
+easy_install --install-dir lib  --upgrade google-api-python-client
+
+I had to add "redirect_uris": ["https://localhost:8080/oauth2callback"],
+
+to the client secrets JSON file.
+
+
+
+
