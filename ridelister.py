@@ -15,7 +15,8 @@ from ridelib.approver import *
 
 config = {}
 config['webapp2_extras.sessions'] = {
-    'secret_key': '242334c07588e6fcf93551e1c5bdefc3',
+    'secret_key': 'ridelister242334c0',
+    'cookie_name': 'ridelister-session',
 }
 
 app = webapp2.WSGIApplication([

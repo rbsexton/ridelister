@@ -85,7 +85,8 @@ class SubmissionApprove(webapp2.RequestHandler):
     @webapp2.cached_property
     def session(self):
         # Returns a session using the default cookie key.
-        return self.session_store.get_session()
+        return self.session_store.get_session(backend='memcache')
+        # return self.session_store.get_session()
         
     def get(self):
 

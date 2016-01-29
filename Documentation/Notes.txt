@@ -25,6 +25,8 @@ I had to add "redirect_uris": ["https://localhost:8080/oauth2callback"],
 
 to the client secrets JSON file.
 
+You have to implement this: 
 
+https://developers.google.com/api-client-library/python/auth/web-app
 
-
+So you need session management.  Flask does this - thats why its in the examples.
