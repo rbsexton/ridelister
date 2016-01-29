@@ -14,6 +14,7 @@ import httplib2
 import os
 import jinja2
 import webapp2
+from webapp2_extras import sessions
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -34,7 +35,6 @@ import datetime
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'credentials/client_secret.json'
 APPLICATION_NAME = 'Ridelister'
-
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -67,12 +67,26 @@ def get_credentials(user_id):
         # credentials = tools.run_flow(flow, storage)
         # print('Storing credentials')
         auth_uri = flow.step1_get_authorize_url()
-        
-
     return credentials
 
 
 class SubmissionApprove(webapp2.RequestHandler):
+    def dispatch(self):
+        # Get a session store for this request.
+        self.session_store = sessions.get_store(request=self.request)
+
+        try:
+            # Dispatch the request.
+            webapp2.RequestHandler.dispatch(self)
+        finally:
+            # Save all sessions.
+            self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def session(self):
+        # Returns a session using the default cookie key.
+        return self.session_store.get_session()
+        
     def get(self):
 
         # We'll use the nickname as a credentials key.
@@ -89,6 +103,8 @@ class SubmissionApprove(webapp2.RequestHandler):
         # http = credentials.authorize(httplib2.Http())
         # service = discovery.build('calendar', 'v3', http=http)
     
+        # Save something in the session
+        self.session['foo'] = 'bar'
 
         if user:
             nick = user.nickname()
@@ -111,6 +127,7 @@ class SubmissionApprove(webapp2.RequestHandler):
             'creation': ridelisting.created,
             'modified': ridelisting.modified,
             'ridedbkey': textkey,
+            'sessioninfo': self.session.get('foo'),
             }
 
         # Go ahead and render it out for the user
