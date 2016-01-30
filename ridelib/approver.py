@@ -69,6 +69,27 @@ def get_credentials(user_id):
         auth_uri = flow.step1_get_authorize_url()
     return credentials
 
+# Here's the thing that handles the URL hit from the 
+# Google authentication system.
+class SubmissionGoogleAuth(webapp2.RequestHandler):
+    def get(self):
+
+        get_values = request.GET
+        
+        # This approximately follows the flow provided by google.
+        # if we land here, we cat get real credentials.
+        if 'code' in get_values.keys()
+            flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE,SCOPES
+                redirect_uri="https://localhost:8080/oauth2callback" )
+            credentials = flow.step2_exchange(get_values{'code'})
+            # Stuff them into the session area.
+            self.session['credentials'] = credentials.to_json()
+            self.redirect('/approve')
+        else:
+            auth_uri = flow.step1_get_authorize_url()
+            self.redirect(auth_uri)
+        return
+
 
 class SubmissionApprove(webapp2.RequestHandler):
     def dispatch(self):

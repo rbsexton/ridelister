@@ -25,6 +25,7 @@ app = webapp2.WSGIApplication([
     ('/submit', SubmissionAck),
     ('/view', SubmissionDisplay),
     ('/approve', SubmissionApprove),
+	('/oauth2callback' SubmissionGoogleAuth),
 ], config=config, debug=True)
 
 
