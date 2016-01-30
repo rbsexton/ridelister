@@ -97,7 +97,7 @@ class SubmissionApprove(webapp2.RequestHandler):
             self.redirect('http://ridelister-1191.appspot.com/oauth2callback')
             return
 
-        credentials = client.OAuth2Credentials.from_json['credentials']
+        credentials = client.OAuth2Credentials.from_json(self.session.get('credentials'))
         if credentials.access_token_expired:
             self.redirect('http://ridelister-1191.appspot.com/oauth2callback')
             return
@@ -144,6 +144,22 @@ class SubmissionApprove(webapp2.RequestHandler):
 # Google authentication system.
 ##################################################################################
 class SubmissionGoogleAuth(webapp2.RequestHandler):
+    def dispatch(self):
+        # Get a session store for this request.
+        self.session_store = sessions.get_store(request=self.request)
+
+        try:
+            # Dispatch the request.
+            webapp2.RequestHandler.dispatch(self)
+        finally:
+            # Save all sessions.
+            self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def session(self):
+        # Returns a session using the default cookie key.
+        return self.session_store.get_session(backend='memcache')
+ 
     def get(self):
         get_values = self.request.GET
 
