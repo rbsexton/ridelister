@@ -30,3 +30,7 @@ You have to implement this:
 https://developers.google.com/api-client-library/python/auth/web-app
 
 So you need session management.  Flask does this - thats why its in the examples.
+https://webapp-improved.appspot.com/api/webapp2_extras/sessions.html
+
+Getting an authorization token from google 
+You need to generate a client key, and more significantly, the key needs to match up with the referring URI.

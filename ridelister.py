@@ -24,8 +24,8 @@ app = webapp2.WSGIApplication([
     ('/edit', RideEntryEdit),
     ('/submit', SubmissionAck),
     ('/view', SubmissionDisplay),
+    ('/oauth2callback', SubmissionGoogleAuth),
     ('/approve', SubmissionApprove),
-	('/oauth2callback' SubmissionGoogleAuth),
 ], config=config, debug=True)
 
 
