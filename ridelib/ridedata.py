@@ -21,5 +21,7 @@ class RideDataItem(ndb.Model):
     startlocation = ndb.StringProperty()
     startcoords = ndb.GeoPtProperty()
 
+    submitter_email = ndb.StringProperty()
+
     approved = ndb.BooleanProperty()
 

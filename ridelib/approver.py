@@ -32,6 +32,7 @@ from oauth2client.appengine import CredentialsNDBModel
 import datetime
 
 from ridelib.config import *
+from ridelib.email import *
 
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -148,6 +149,7 @@ class SubmissionApprove(webapp2.RequestHandler):
             'ridedescription': ridelisting.description,
             'creation': ridelisting.created,
             'modified': ridelisting.modified,
+            'submitteremail': ridelisting.submitter_email,
             'ridedbkey': textkey,
             'sessioninfo': now,
             'payload' : formatted

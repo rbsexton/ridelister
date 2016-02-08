@@ -51,21 +51,8 @@ class SubmissionAck(webapp2.RequestHandler):
 
         # print repr(dt)
 
-        # Load it up into a NDB entry.
-        listing = RideDataItem(
-            version = 2,
-            name = ridename,
-            startdate = dt.date(),
-            startlocation = ridestart,
-            description = ridedescription,
-            )
 
-        # Now its time to stash this data into the database and retrieve the key
-        # So that it can be shared with the user in URL form.        
-        key = listing.put()
-        ridedbkey = key.urlsafe()
-   
-        # Get their email address from their google info.
+       # Get their email address from their google info.
         user = users.get_current_user()
 
         if user:
@@ -74,6 +61,21 @@ class SubmissionAck(webapp2.RequestHandler):
             greeting = 'You must be logged in to get a confirmation email'
             self.redirect(users.create_login_url(self.request.uri))
 
+        # Load it up into a NDB entry.
+        listing = RideDataItem(
+            version = 3,
+            name = ridename,
+            startdate = dt.date(),
+            startlocation = ridestart,
+            description = ridedescription,
+            submitter_email = user.email()
+            )
+
+        # Now its time to stash this data into the database and retrieve the key
+        # So that it can be shared with the user in URL form.        
+        key = listing.put()
+        ridedbkey = key.urlsafe()
+   
         template_values = {
             'greeting': greeting,
             'ridename': ridename,

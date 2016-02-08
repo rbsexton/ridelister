@@ -13,7 +13,6 @@ def email_submission_confirm(key):
     # Now that we've sent the form response, send the confirmation email.
     # There should have been a checkbox in case they didn't want it.
 
-    
     ridelisting = key.get()
 
     user = users.get_current_user()
@@ -50,14 +49,15 @@ def email_publication_approved(key):
     ridelisting = key.get()
 
     message = mail.EmailMessage(sender="Ride Lister <robert@kudra.com>",
-                                    subject="Your ride listing")
+                                    subject="Your ride listing was approved")
 
     # Need some code here to look up the submitter's email address and 
     # Address it correctly.
 
+    message.to = ridelisting.submitter_email
     message.body = """
 
-Thanks for submitting your ride!
+Your ride listing has been approved and has been published
 
 <p>Ride Name: %s
 <p>Ride Starting Location: %s
@@ -73,6 +73,7 @@ Thanks for submitting your ride!
         key.urlsafe(),key.urlsafe()
         )
         
+    message.send()
 
 
 
