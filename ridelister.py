@@ -13,6 +13,8 @@ from ridelib.rideentry import *
 from ridelib.submit import *
 from ridelib.approver import *
 
+from ridelib.email import *
+
 config = {}
 config['webapp2_extras.sessions'] = {
     'secret_key': 'ridelister242334c0',

@@ -24,6 +24,8 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.api import mail
 
+from ridelib.email import *
+
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
@@ -84,28 +86,8 @@ class SubmissionAck(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('submissionack.html')
         self.response.write(template.render(template_values))
 
-        # Now that we've sent the form response, send the confirmation email.
-        # There should have been a checkbox in case they didn't want it.
-
-        message = mail.EmailMessage(sender="Ride Lister <robert@kudra.com>",
-                                    subject="Your ride listing")
-
-        message.body = """
-
-Thanks for submitting your ride!
-
-<p>Ride Name: %s
-<p>Ride Starting Location: %s
-<p>Ride Description: %s
-
-<p>You may edit this ride listing: <a href="edit?dbkey=%s">Edit</a>
-
-        """ % (ridename, ridestart, ridedescription, ridedbkey)
-
-        if user:
-            message.to = user.email()
-            message.send()
-
+        email_submission_confirm(key)
+        
 
 # Here is a class that can be used to display a database entry.
 class SubmissionDisplay(webapp2.RequestHandler):
