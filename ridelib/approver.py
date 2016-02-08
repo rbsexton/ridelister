@@ -31,6 +31,7 @@ from oauth2client.appengine import CredentialsNDBModel
 
 import datetime
 
+from ridelib.config import *
 
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
@@ -60,7 +61,7 @@ def get_credentials(user_id):
         flow = client.flow_from_clientsecrets(
                CLIENT_SECRET_FILE,
                SCOPES,
-               redirect_uri="http://ridelister-1191.appspot.com/oauth2callback",
+               redirect_uri=ridelisterconfig['ridelister']['callbackurl'],
                # redirect_uri="https://localhost:8080/oauth2callback",
                )
 
@@ -104,7 +105,23 @@ class SubmissionApprove(webapp2.RequestHandler):
 
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
-                        
+        
+
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+        print('Getting the upcoming 10 events')
+        eventsResult = service.events().list(
+            calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+            orderBy='startTime').execute()
+        events = eventsResult.get('items', [])
+
+        formatted = 'Data: '
+        
+        if not events:
+            print('No upcoming events found.')
+        for event in events:
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            formatted.join(start + event['summary'])
+
         # We'll use the nickname as a credentials key.
         user = users.get_current_user()
 
@@ -132,7 +149,8 @@ class SubmissionApprove(webapp2.RequestHandler):
             'creation': ridelisting.created,
             'modified': ridelisting.modified,
             'ridedbkey': textkey,
-            'sessioninfo': self.session.get('foo'),
+            'sessioninfo': now,
+            'payload' : formatted
             }
 
         # Go ahead and render it out for the user
